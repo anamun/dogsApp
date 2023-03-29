@@ -1,7 +1,8 @@
 package com.example.dogsapp.presentation
 
+import android.net.Uri
 import android.util.Log
-import androidx.compose.runtime.mutableStateListOf
+import androidx.core.net.toUri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -13,7 +14,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
-data class ImageItem(val url: String)
+data class Dog(val breed: String, val imageUrl: Uri?, val subBreedList: List<String>?)
 
 @HiltViewModel
 class DogViewModel @Inject constructor(
@@ -22,22 +23,12 @@ class DogViewModel @Inject constructor(
     private val _dogBreeds = MutableLiveData<List<String>>()
     val dogBreeds: LiveData<List<String>> = _dogBreeds
 
-    private val _dogImages = MutableLiveData<List<String>>()
-    val dogImages: LiveData<List<String>> = _dogImages
-
-    fun addDogImage(newValue: String) {
-        val currentList = _dogImages.value.orEmpty().toMutableList()
-        currentList.add(newValue)
-        _dogImages.value = currentList
-        Log.d("DogBreedsViewModel", "added new image and now list size: ${dogImages.value?.size}")
-
-    }
-
+    private val _dogs = MutableLiveData<List<Dog>>()
+    val dogs: LiveData<List<Dog>> = _dogs
 
     fun getRandomBreeds(count: Int) {
         viewModelScope.launch {
-            val result = dogService.search(count)
-            when (result) {
+            when (val result = dogService.searchBreeds(count)) {
                 is SearchResult.Success -> {
                     _dogBreeds.value = result.data
                     addRandomImages()
@@ -52,16 +43,29 @@ class DogViewModel @Inject constructor(
         }
     }
 
-    fun searchImageByBreed(breed: String) {
+    private fun addDog(newDog: Dog) {
+        val currentList = _dogs.value.orEmpty().toMutableList()
+        currentList.add(newDog)
+        _dogs.value = currentList
+        Log.d("DogBreedsViewModel", "added new image and now list size: ${dogs.value?.size}")
+
+    }
+
+
+    private fun searchImageByBreed(breed: String) {
         Log.d("DogBreedsViewModel", "searchImageByBreed called ${breed}")
-        var imageUrl = ""
+        var imageUrl: Uri? = null
+        var subBreedList: List<String>? = null
         viewModelScope.launch {
-            val result = dogService.searchImageByBreed(breed)
-            if (result is SearchResult.Success) {
-                // Log.d("DogBreedsViewModel", "Got image: ${result.data}")
-                imageUrl = result.data
-                addDogImage(imageUrl)
+            val imgResult = dogService.searchImageByBreed(breed)
+            if (imgResult is SearchResult.Success) {
+                imageUrl = imgResult.data.toUri()
             }
+            val subBreedsResult = dogService.searchSubBreeds(breed)
+            if (subBreedsResult is SearchResult.Success) {
+                subBreedList = subBreedsResult.data
+            }
+            addDog(Dog(breed = breed, imageUrl = imageUrl, subBreedList = subBreedList))
         }
     }
 
@@ -69,7 +73,7 @@ class DogViewModel @Inject constructor(
         _dogBreeds.value?.map {
             searchImageByBreed(it)
         }
-        Log.d("DogBreedsViewModel", "Got image list of size: ${dogImages.value?.size}")
+        Log.d("DogBreedsViewModel", "Got image list of size: ${dogs.value?.size}")
     }
 
 

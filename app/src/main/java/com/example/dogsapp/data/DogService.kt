@@ -8,7 +8,7 @@ sealed class SearchResult<out T> {
 }
 
 class DogService @Inject constructor(private val dogApi: DogApi) {
-    suspend fun search(count: Int): SearchResult<List<String>> {
+    suspend fun searchBreeds(count: Int): SearchResult<List<String>> {
         return try {
             val response = dogApi.getRandomBreeds(count)
             if (response.status == "success") {
@@ -18,6 +18,19 @@ class DogService @Inject constructor(private val dogApi: DogApi) {
             }
         } catch (e: Exception) {
             SearchResult.Error("Error getting dog breeds: ${e.message}")
+        }
+    }
+
+    suspend fun searchSubBreeds(breed: String): SearchResult<List<String>> {
+        return try {
+            val response = dogApi.getSubBreeds(breed)
+            if (response.status == "success") {
+                SearchResult.Success(response.message)
+            } else {
+                SearchResult.Error("Error getting dog sub-breeds: ${response.status}")
+            }
+        } catch (e: Exception) {
+            SearchResult.Error("Error getting dog sub-reeds: ${e.message}")
         }
     }
 
