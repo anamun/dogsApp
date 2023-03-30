@@ -1,5 +1,7 @@
 package com.example.dogsapp.presentation.composable
 
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInHorizontally
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -20,6 +22,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
+import com.example.dogsapp.Constant.ROUTE_DOG_DETAILS
 import com.example.dogsapp.R
 import com.example.dogsapp.presentation.Dog
 import com.example.dogsapp.presentation.DogViewModel
@@ -31,7 +34,7 @@ fun GridItem(dog: Dog, navController: NavController, viewModel: DogViewModel) {
         modifier = Modifier
             .clickable {
                 viewModel.updateSelectedDog(dog)
-                navController.navigate("dogDetails")
+                navController.navigate(ROUTE_DOG_DETAILS)
             }
             .size(200.dp)
             .border(1.dp, Color.White)

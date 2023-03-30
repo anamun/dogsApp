@@ -17,6 +17,7 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.text.font.FontFamily
@@ -42,7 +43,6 @@ fun DogDetailsText(text: String) {
                 Color.White.copy(alpha = 0.8f),
                 shape = RoundedCornerShape(4.dp)
             )
-
     )
 }
 
@@ -76,7 +76,6 @@ fun DogDetailsScreen(viewModel: DogViewModel) {
                     contentDescription = null,
                     modifier = Modifier
                         .size(400.dp)
-                        // .fillMaxWidth()
                         .padding(20.dp)
                         .border(
                             width = 2.dp,
@@ -86,10 +85,20 @@ fun DogDetailsScreen(viewModel: DogViewModel) {
                     contentScale = ContentScale.Crop
                 )
 
-                DogDetailsText("Dog's breed is ${dog?.breed}. Have you guessed it?")
+                DogDetailsText(
+                    text = LocalContext.current.getString(
+                        R.string.guess_answer,
+                        dog?.breed
+                    )
+                )
                 Spacer(modifier = Modifier.height(16.dp))
                 if (dog!!.subBreedList.isNotEmpty()) {
-                    DogDetailsText(text = "Did you know that ${dog?.breed} has following sub-breeds?")
+                    DogDetailsText(
+                        text = LocalContext.current.getString(
+                            R.string.about_sub_breeds,
+                            dog?.breed
+                        )
+                    )
                     LazyColumn(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         modifier = Modifier
@@ -102,7 +111,10 @@ fun DogDetailsScreen(viewModel: DogViewModel) {
                     ) {
                         items(dog!!.subBreedList.size) { item ->
                             Text(
-                                text = "sub-breed ${dog!!.subBreedList[item]}",
+                                text = LocalContext.current.getString(
+                                    R.string.sub_breed,
+                                    dog!!.subBreedList[item]
+                                ),
                                 textAlign = TextAlign.Center,
                                 fontSize = 22.sp,
                                 fontStyle = FontStyle.Italic,
@@ -117,7 +129,12 @@ fun DogDetailsScreen(viewModel: DogViewModel) {
                         }
                     }
                 } else {
-                    DogDetailsText(text = "Fun fact: ${dog?.breed} has no sub-breeds!")
+                    DogDetailsText(
+                        text = LocalContext.current.getString(
+                            R.string.fun_fact,
+                            dog!!.breed
+                        )
+                    )
                 }
             }
 

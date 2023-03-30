@@ -12,7 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
@@ -27,19 +26,17 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.NavHostController
 import com.example.dogsapp.Constant
+import com.example.dogsapp.Constant.MESSAGE_SHOW_DELAY
+import com.example.dogsapp.Constant.PULSE_BUTTON_DELAY
 import kotlinx.coroutines.delay
 
 @Composable
 fun PresentationScreen(navController: NavController) {
-    var isMessageVisible by remember { mutableStateOf(false) }
-    var isAvatarVisible by remember { mutableStateOf(false) }
-
+    var isMessageVisible by rememberSaveable { mutableStateOf(false) }
     var pulse by remember { mutableStateOf(false) }
 
     val scale by animateFloatAsState(
@@ -71,17 +68,17 @@ fun PresentationScreen(navController: NavController) {
                         .background(colorResource(R.color.tint_color).copy(alpha = 0.8f))
 
                 ) {
-                    Row(
-                        modifier = Modifier.padding(start = 8.dp),
-                        verticalAlignment = Alignment.Bottom
-
+                    this@Column.AnimatedVisibility(
+                        visible = isMessageVisible,
+                        enter = slideInVertically(
+                            initialOffsetY = { -it },
+                            animationSpec = tween(durationMillis = 500)
+                        )
                     ) {
-                        AnimatedVisibility(
-                            visible = isAvatarVisible,
-                            enter = slideInVertically(
-                                initialOffsetY = { -it },
-                                animationSpec = tween(durationMillis = 500)
-                            )
+                        Row(
+                            modifier = Modifier.padding(start = 8.dp),
+                            verticalAlignment = Alignment.Bottom
+
                         ) {
                             Image(
                                 painter = painterResource(id = R.drawable.avatar),
@@ -92,15 +89,6 @@ fun PresentationScreen(navController: NavController) {
                                     .clip(CircleShape)
                                     .scale(1.5f)
                             )
-                        }
-
-                        AnimatedVisibility(
-                            visible = isMessageVisible,
-                            enter = slideInVertically(
-                                initialOffsetY = { -it },
-                                animationSpec = tween(durationMillis = 500)
-                            )
-                        ) {
                             Surface(
                                 shape = RoundedCornerShape(
                                     topStart = 16.dp,
@@ -110,12 +98,11 @@ fun PresentationScreen(navController: NavController) {
                                 ), color = Color.White,
                                 modifier = Modifier
                                     .padding(8.dp)
-                                    //.padding(top = 24.dp)
                                     .fillMaxWidth()
                                     .alpha(0.8f)
 
                             ) {
-                                val welcomeText = stringResource(R.string.welcome_text_1)
+                                val welcomeText = stringResource(R.string.welcome_text)
                                 val annotatedString = buildAnnotatedString {
                                     pushStyle(
                                         SpanStyle(
@@ -181,15 +168,13 @@ fun PresentationScreen(navController: NavController) {
 
                         LaunchedEffect(Unit) {
                             pulse = true
-                            delay(1500)
+                            delay(PULSE_BUTTON_DELAY)
                             pulse = false
                         }
                     }
 
                     LaunchedEffect(true) {
-                        delay(1000L)
-                        isAvatarVisible = true
-                        delay(50L)
+                        delay(MESSAGE_SHOW_DELAY)
                         isMessageVisible = true
                     }
                 }
