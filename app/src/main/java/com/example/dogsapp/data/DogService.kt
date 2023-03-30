@@ -1,5 +1,6 @@
 package com.example.dogsapp.data
 
+import android.util.Log
 import javax.inject.Inject
 
 sealed class SearchResult<out T> {
@@ -25,6 +26,7 @@ class DogService @Inject constructor(private val dogApi: DogApi) {
         return try {
             val response = dogApi.getSubBreeds(breed)
             if (response.status == "success") {
+                Log.d("DogBreedsViewModel", "sub-breeds called ${response.message}")
                 SearchResult.Success(response.message)
             } else {
                 SearchResult.Error("Error getting dog sub-breeds: ${response.status}")

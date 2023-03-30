@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <style name="Theme.DogsApp" parent="android:Theme.Material.Light.NoActionBar">
-        <item name="android:statusBarColor">@color/purple_700</item>
+        <item name="android:statusBarColor">@color/primary_color</item>
+        <item name="windowSplashScreenBackground">@drawable/splash_background</item>
     </style>
 </resources>

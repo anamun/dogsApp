@@ -1,5 +1,6 @@
 package com.example.dogsapp.data
 
+import com.example.dogsapp.Constant
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -11,10 +12,10 @@ object ApiService {
             .client(
                 OkHttpClient
                     .Builder()
-                    .connectTimeout(30L, TimeUnit.SECONDS)
+                    .connectTimeout(Constant.TIMEOUT, TimeUnit.SECONDS)
                     .build()
             )
-            .baseUrl("https://dog.ceo/api/")
+            .baseUrl(Constant.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(DogApi::class.java)

@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">DogsApp</string>
+    <string name="button_start_text">Start</string>
+    <string name="welcome_text_1">Hello, dear friend!.\n\nMy name is Pembroke and I am here to introduce the DogsApp.\nI am a Welsh Corgi, and I am known for my playful and friendly personality. And I have a little game to play!\nDo you think you can recognize any dog breed just by looking at a picture of a cute pup?\nHere is how it works: I will show you a picture of a furry friend, and it is up to you to guess the breed. You can click on the picture to reveal the breed name and see if you guessed correctly.\n\nBut wait, there is more! I know you are not here just to guess dogs - you want to learn about them too. That is why I have included a fact about each breed sub-breeds (if they have it) to help you expand your knowledge of these four-legged friends. \n\nHit the button below whenever you are ready!</string>
 </resources>
