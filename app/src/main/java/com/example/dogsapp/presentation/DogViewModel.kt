@@ -22,14 +22,12 @@ class DogViewModel @Inject constructor(
     private val getRandomImageByBreedUseCase: GetRandomImageByBreedUseCase,
 ) : ViewModel() {
 
-    private val _dogBreeds = MutableLiveData<List<String>>()
-
-    private val dogList = ArrayList<Dog>()
+    private val dogList = mutableListOf<Dog>()
     private val _dogs = MutableLiveData<List<Dog>>()
-    val dogs: LiveData<List<Dog>> = _dogs
+    val dogs: LiveData<List<Dog>> get() = _dogs
 
     private val _selectedDog = MutableLiveData<Dog>()
-    val selectedDog: LiveData<Dog> = _selectedDog
+    val selectedDog: LiveData<Dog> get() = _selectedDog
     fun updateSelectedDog(newDog: Dog) {
         _selectedDog.value = newDog
     }
@@ -38,8 +36,9 @@ class DogViewModel @Inject constructor(
         viewModelScope.launch {
             when (val result = getRandomBreedsUseCase.execute(count)) {
                 is SearchResult.Success -> {
-                    _dogBreeds.value = result.data
-                    addRandomImages()
+                    result.data.forEach {
+                        searchDogData(it)
+                    }
                 }
                 is SearchResult.Error -> {
                     Log.e(DOGS_APP_TAG, "Error getting dog breeds: ${result.message}")
@@ -54,26 +53,29 @@ class DogViewModel @Inject constructor(
         Log.d(DOGS_APP_TAG, "added new image and now list size: ${dogs.value?.size}")
     }
 
-    private fun searchImageByBreed(breed: String) {
-        var imageUrl: String? = null
-        var subBreedList: List<String> = emptyList()
+    private fun searchDogData(breed: String) {
         viewModelScope.launch {
-            val imgResult = getRandomImageByBreedUseCase.execute(breed)
-            if (imgResult is SearchResult.Success) {
-                imageUrl = imgResult.data
+            when (val imgResult = getRandomImageByBreedUseCase.execute(breed)) {
+                is SearchResult.Success -> when (
+                    val subBreedsResult = getSubBreedsUseCase.execute(breed)
+                ) {
+                    is SearchResult.Success -> {
+                        addDog(
+                            Dog(
+                                breed = breed,
+                                imageUrl = imgResult.data,
+                                subBreedList = subBreedsResult.data
+                            )
+                        )
+                    }
+                    is SearchResult.Error -> {
+                        Log.e(DOGS_APP_TAG, "Error getting dog image")
+                    }
+                }
+                is SearchResult.Error -> {
+                    Log.e(DOGS_APP_TAG, "Error getting dog sub-breeds")
+                }
             }
-            val subBreedsResult = getSubBreedsUseCase.execute(breed)
-            if (subBreedsResult is SearchResult.Success) {
-                subBreedList = subBreedsResult.data
-            }
-            addDog(Dog(breed = breed, imageUrl = imageUrl, subBreedList = subBreedList))
         }
-    }
-
-    private fun addRandomImages() {
-        _dogBreeds.value?.map {
-            searchImageByBreed(it)
-        }
-        Log.d(DOGS_APP_TAG, "Got image list of size: ${dogs.value?.size}")
     }
 }
