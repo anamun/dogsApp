@@ -4,7 +4,6 @@ import com.example.dogsapp.data.model.BreedsResponse
 import com.example.dogsapp.data.model.ImageResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
-
 interface DogApi {
     @GET("breeds/list/random/{count}")
     suspend fun getRandomBreeds(@Path("count") count: Int): BreedsResponse

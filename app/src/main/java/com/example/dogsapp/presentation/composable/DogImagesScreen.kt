@@ -22,7 +22,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
-import com.example.dogsapp.Constant.ROUTE_DOG_DETAILS
+import com.example.dogsapp.Constant.Navigation.ROUTE_DOG_DETAILS
 import com.example.dogsapp.R
 import com.example.dogsapp.domain.model.Dog
 import com.example.dogsapp.presentation.DogViewModel

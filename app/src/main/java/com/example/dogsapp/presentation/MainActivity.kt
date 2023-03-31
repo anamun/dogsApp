@@ -12,10 +12,10 @@ import dagger.hilt.android.AndroidEntryPoint
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.google.accompanist.navigation.animation.composable
 import com.example.dogsapp.Constant.DOGS_NUMBER
-import com.example.dogsapp.Constant.ROUTE_DOG_DETAILS
-import com.example.dogsapp.Constant.ROUTE_IMAGE_GRID
-import com.example.dogsapp.Constant.ROUTE_PRESENTATION
-import com.example.dogsapp.Constant.NAVIGATION_TWEEN
+import com.example.dogsapp.Constant.Navigation.ROUTE_DOG_DETAILS
+import com.example.dogsapp.Constant.Navigation.ROUTE_IMAGE_GRID
+import com.example.dogsapp.Constant.Navigation.ROUTE_PRESENTATION
+import com.example.dogsapp.Constant.Animation.NAVIGATION_TWEEN
 import com.example.dogsapp.presentation.composable.DogDetailsScreen
 import com.example.dogsapp.presentation.composable.DogImagesScreen
 import com.example.dogsapp.presentation.composable.PresentationScreen
@@ -72,11 +72,8 @@ fun DogsApp(viewModel: DogViewModel) {
                     animationSpec = tween(durationMillis = NAVIGATION_TWEEN)
                 )
             }
-
         ) {
             DogDetailsScreen(viewModel)
         }
-
-
     }
 }

@@ -30,8 +30,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.dogsapp.Constant
-import com.example.dogsapp.Constant.MESSAGE_SHOW_DELAY
-import com.example.dogsapp.Constant.PULSE_BUTTON_DELAY
+import com.example.dogsapp.Constant.Animation.MESSAGE_SHOW_DELAY
+import com.example.dogsapp.Constant.Animation.PULSE_BUTTON_DELAY
 import kotlinx.coroutines.delay
 
 @Composable
@@ -50,135 +50,134 @@ fun PresentationScreen(navController: NavController) {
         modifier = Modifier
             .fillMaxSize()
     ) {
-        BoxWithConstraints {
+        Box(
+            Modifier.fillMaxSize(),
+            contentAlignment = Alignment.BottomStart
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.paws_background),
+                contentDescription = null,
+                modifier = Modifier
+                    .aspectRatio(1f)
+                    .scale(3f)
+            )
             Box(
-                Modifier.fillMaxSize(),
-                contentAlignment = Alignment.BottomStart
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.paws_background),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .aspectRatio(1f)
-                        .scale(3f)
-                )
-                Box(
-                    Modifier
-                        .fillMaxSize()
-                        .background(colorResource(R.color.tint_color).copy(alpha = 0.8f))
+                Modifier
+                    .fillMaxSize()
+                    .background(colorResource(R.color.tint_color).copy(alpha = 0.8f))
 
+            ) {
+                this@Column.AnimatedVisibility(
+                    visible = isMessageVisible,
+                    enter = slideInVertically(
+                        initialOffsetY = { -it },
+                        animationSpec = tween(durationMillis = 500)
+                    )
                 ) {
-                    this@Column.AnimatedVisibility(
-                        visible = isMessageVisible,
-                        enter = slideInVertically(
-                            initialOffsetY = { -it },
-                            animationSpec = tween(durationMillis = 500)
-                        )
+                    Row(
+                        modifier = Modifier.padding(start = 8.dp),
+                        verticalAlignment = Alignment.Bottom
+
                     ) {
-                        Row(
-                            modifier = Modifier.padding(start = 8.dp),
-                            verticalAlignment = Alignment.Bottom
+                        Image(
+                            painter = painterResource(id = R.drawable.avatar),
+                            contentDescription = "Avatar",
+                            modifier = Modifier
+                                .padding(bottom = 16.dp)
+                                .size(80.dp)
+                                .clip(CircleShape)
+                                .scale(1.5f)
+                        )
+                        Surface(
+                            shape = RoundedCornerShape(
+                                topStart = 16.dp,
+                                topEnd = 16.dp,
+                                bottomEnd = 16.dp,
+                                bottomStart = 4.dp
+                            ), color = Color.White,
+                            modifier = Modifier
+                                .padding(8.dp)
+                                .fillMaxWidth()
+                                .alpha(0.8f)
 
                         ) {
-                            Image(
-                                painter = painterResource(id = R.drawable.avatar),
-                                contentDescription = "Avatar",
-                                modifier = Modifier
-                                    .padding(bottom = 16.dp)
-                                    .size(80.dp)
-                                    .clip(CircleShape)
-                                    .scale(1.5f)
-                            )
-                            Surface(
-                                shape = RoundedCornerShape(
-                                    topStart = 16.dp,
-                                    topEnd = 16.dp,
-                                    bottomEnd = 16.dp,
-                                    bottomStart = 4.dp
-                                ), color = Color.White,
-                                modifier = Modifier
-                                    .padding(8.dp)
-                                    .fillMaxWidth()
-                                    .alpha(0.8f)
-
-                            ) {
-                                val welcomeText = stringResource(R.string.welcome_text)
-                                val annotatedString = buildAnnotatedString {
-                                    pushStyle(
-                                        SpanStyle(
-                                            fontWeight = FontWeight.Bold,
-                                            fontStyle = FontStyle.Italic
-                                        )
+                            val welcomeText = stringResource(R.string.welcome_text)
+                            val annotatedString = buildAnnotatedString {
+                                pushStyle(
+                                    SpanStyle(
+                                        fontWeight = FontWeight.Bold,
+                                        fontStyle = FontStyle.Italic
                                     )
-                                    append(welcomeText.substringBefore("."))
-                                    pop()
-                                    append(welcomeText.substringAfter("."))
-                                }
-                                Text(
-                                    text = annotatedString,
-                                    fontFamily = FontFamily.SansSerif,
-                                    fontSize = 16.sp,
-                                    color = Color.Black,
-                                    modifier = Modifier
-                                        .padding(16.dp)
-
                                 )
+                                append(welcomeText.substringBefore("."))
+                                pop()
+                                append(welcomeText.substringAfter("."))
                             }
+                            Text(
+                                text = annotatedString,
+                                fontFamily = FontFamily.SansSerif,
+                                fontSize = 16.sp,
+                                color = Color.Black,
+                                modifier = Modifier
+                                    .padding(16.dp)
+
+                            )
                         }
                     }
-                    BoxWithConstraints(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(bottom = 16.dp),
-                        contentAlignment = Alignment.BottomCenter,
+                }
+                BoxWithConstraints(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(bottom = 16.dp),
+                    contentAlignment = Alignment.BottomCenter,
+                ) {
+                    Box(
+                        Modifier
+                            .wrapContentHeight()
+                            .background(
+                                color = colorResource(id = R.color.button_color).copy(alpha = 0.5f),
+                                shape = CircleShape
+                            ),
+
+                        contentAlignment = Alignment.Center
                     ) {
                         Box(
-                            Modifier
-                                .wrapContentHeight()
+                            modifier = Modifier
+                                .size(80.dp)
+                                .scale(scale)
+                                .clip(RoundedCornerShape(50))
                                 .background(
-                                    color = colorResource(id = R.color.button_color).copy(alpha = 0.5f),
+                                    color = colorResource(id = R.color.button_color).copy(
+                                        alpha = 0.6f
+                                    ),
                                     shape = CircleShape
-                                ),
+                                )
+                                .clickable { navController.navigate(Constant.Navigation.ROUTE_IMAGE_GRID) },
 
                             contentAlignment = Alignment.Center
                         ) {
-                            Box(
-                                modifier = Modifier
-                                    .size(80.dp)
-                                    .scale(scale)
-                                    .clip(RoundedCornerShape(50))
-                                    .background(
-                                        color = colorResource(id = R.color.button_color).copy(
-                                            alpha = 0.6f
-                                        ),
-                                        shape = CircleShape
-                                    )
-                                    .clickable { navController.navigate(Constant.ROUTE_IMAGE_GRID) },
-
-                                contentAlignment = Alignment.Center
-                            ) {
-                                Text(
-                                    text = stringResource(R.string.button_start_text).uppercase(),
-                                    fontFamily = FontFamily.SansSerif,
-                                    fontWeight = FontWeight.SemiBold,
-                                    color = Color.Black
-                                )
-                            }
-                        }
-
-                        LaunchedEffect(Unit) {
-                            pulse = true
-                            delay(PULSE_BUTTON_DELAY)
-                            pulse = false
+                            Text(
+                                text = stringResource(R.string.button_start_text).uppercase(),
+                                fontFamily = FontFamily.SansSerif,
+                                fontWeight = FontWeight.SemiBold,
+                                color = Color.Black
+                            )
                         }
                     }
 
-                    LaunchedEffect(true) {
-                        delay(MESSAGE_SHOW_DELAY)
-                        isMessageVisible = true
+                    LaunchedEffect(Unit) {
+                        pulse = true
+                        delay(PULSE_BUTTON_DELAY)
+                        pulse = false
                     }
                 }
+
+                LaunchedEffect(true) {
+                    delay(MESSAGE_SHOW_DELAY)
+                    isMessageVisible = true
+                }
             }
+
         }
     }
 }
