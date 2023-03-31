@@ -68,9 +68,9 @@ fun DogDetailsScreen(viewModel: DogViewModel) {
                 modifier = Modifier
                     .fillMaxSize()
                     .align(Alignment.TopCenter),
-                verticalArrangement = Arrangement.Center
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-
                 Image(
                     painter = rememberImagePainter(data = dog?.imageUrl),
                     contentDescription = null,

@@ -23,8 +23,8 @@ class DogViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _dogBreeds = MutableLiveData<List<String>>()
-    val dogBreeds: LiveData<List<String>> = _dogBreeds
 
+    private val dogList = ArrayList<Dog>()
     private val _dogs = MutableLiveData<List<Dog>>()
     val dogs: LiveData<List<Dog>> = _dogs
 
@@ -49,9 +49,8 @@ class DogViewModel @Inject constructor(
     }
 
     private fun addDog(newDog: Dog) {
-        val currentList = _dogs.value.orEmpty().toMutableList()
-        currentList.add(newDog)
-        _dogs.value = currentList
+        dogList.add(newDog)
+        _dogs.value = dogList
         Log.d(DOGS_APP_TAG, "added new image and now list size: ${dogs.value?.size}")
     }
 
