@@ -30,7 +30,6 @@ class GetRandomImageByBreedUseCaseImplTest {
 
         assertEquals(expected, actual)
     }
-
     @Test
     fun `execute with invalid breed returns error`() = runBlocking {
         val breed = "InvalidBreed"

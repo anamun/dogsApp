@@ -8,19 +8,19 @@ import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
-import dagger.hilt.android.AndroidEntryPoint
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import com.google.accompanist.navigation.animation.composable
+import com.example.dogsapp.Constant.Animation.NAVIGATION_TWEEN
 import com.example.dogsapp.Constant.DOGS_NUMBER
 import com.example.dogsapp.Constant.Navigation.ROUTE_DOG_DETAILS
 import com.example.dogsapp.Constant.Navigation.ROUTE_IMAGE_GRID
 import com.example.dogsapp.Constant.Navigation.ROUTE_PRESENTATION
-import com.example.dogsapp.Constant.Animation.NAVIGATION_TWEEN
 import com.example.dogsapp.presentation.composable.DogDetailsScreen
 import com.example.dogsapp.presentation.composable.DogImagesScreen
 import com.example.dogsapp.presentation.composable.PresentationScreen
 import com.google.accompanist.navigation.animation.AnimatedNavHost
+import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
