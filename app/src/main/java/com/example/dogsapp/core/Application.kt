@@ -1,6 +1,11 @@
 package com.example.dogsapp.core
+
 import android.app.Application
 import com.example.dogsapp.data.DogApi
+import com.example.dogsapp.data.DogRepositoryImpl
+import com.example.dogsapp.data.DogService
+import com.example.dogsapp.domain.repository.DogRepository
+import com.example.dogsapp.domain.usecase.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,7 +23,28 @@ class DogsApplication : Application() {
 
     @Module
     @InstallIn(SingletonComponent::class)
-    object NetworkModule {
+    object AppModule {
+        @Provides
+        fun provideGetRandomBreedsUseCase(dogRepository: DogRepository): GetRandomBreedsUseCase {
+            return GetRandomBreedsUseCaseImpl(dogRepository)
+        }
+
+        @Provides
+        fun provideGetRandomImageByBreedUseCase(
+            dogRepository: DogRepository,
+        ): GetRandomImageByBreedUseCase {
+            return GetRandomImageByBreedUseCaseImpl(dogRepository)
+        }
+
+        @Provides
+        fun provideGetSubBreedsUseCase(dogRepository: DogRepository): GetSubBreedsUseCase {
+            return GetSubBreedsUseCaseImpl(dogRepository)
+        }
+
+        @Provides
+        fun provideDogRepository(dogService: DogService): DogRepository {
+            return DogRepositoryImpl(dogService)
+        }
 
         @Provides
         fun provideDogApi(): DogApi {

@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
 import com.example.dogsapp.R
-import com.example.dogsapp.presentation.Dog
+import com.example.dogsapp.domain.model.Dog
 import com.example.dogsapp.presentation.DogViewModel
 
 @Composable

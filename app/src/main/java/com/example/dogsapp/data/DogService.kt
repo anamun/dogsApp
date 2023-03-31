@@ -1,12 +1,8 @@
 package com.example.dogsapp.data
 
 import android.util.Log
+import com.example.dogsapp.domain.model.SearchResult
 import javax.inject.Inject
-
-sealed class SearchResult<out T> {
-    data class Success<T>(val data: T) : SearchResult<T>()
-    data class Error(val message: String) : SearchResult<Nothing>()
-}
 
 class DogService @Inject constructor(private val dogApi: DogApi) {
     suspend fun searchBreeds(count: Int): SearchResult<List<String>> {
