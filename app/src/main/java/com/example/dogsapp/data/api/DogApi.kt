@@ -1,5 +1,7 @@
-package com.example.dogsapp.data
+package com.example.dogsapp.data.api
 
+import com.example.dogsapp.data.model.BreedsResponse
+import com.example.dogsapp.data.model.ImageResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 

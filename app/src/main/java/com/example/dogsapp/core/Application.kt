@@ -1,9 +1,9 @@
 package com.example.dogsapp.core
 
 import android.app.Application
-import com.example.dogsapp.data.DogApi
+import com.example.dogsapp.data.api.DogApi
 import com.example.dogsapp.data.DogRepositoryImpl
-import com.example.dogsapp.data.DogService
+import com.example.dogsapp.data.api.DogService
 import com.example.dogsapp.domain.repository.DogRepository
 import com.example.dogsapp.domain.usecase.*
 import dagger.Module

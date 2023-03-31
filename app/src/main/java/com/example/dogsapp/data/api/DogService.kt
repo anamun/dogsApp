@@ -1,6 +1,7 @@
-package com.example.dogsapp.data
+package com.example.dogsapp.data.api
 
 import android.util.Log
+import com.example.dogsapp.data.api.DogApi
 import com.example.dogsapp.domain.model.SearchResult
 import javax.inject.Inject
 

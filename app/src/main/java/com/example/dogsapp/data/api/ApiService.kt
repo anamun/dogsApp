@@ -1,4 +1,4 @@
-package com.example.dogsapp.data
+package com.example.dogsapp.data.api
 
 import com.example.dogsapp.Constant
 import okhttp3.OkHttpClient

@@ -1,4 +1,4 @@
-package com.example.dogsapp.data
+package com.example.dogsapp.data.model
 
 data class ImageResponse(
     val status: String,
